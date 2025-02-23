@@ -50,11 +50,10 @@
                     document.getElementById("ascii").textContent = frames[index];
                     index = (index + 1) % frames.length;
                     document.getElementById("ascii").textContent = combinedFrames[index];
-                    index = (index + 1) % combinedFrames.length; // Reiniciar cuando se llegue al final
+                    index = (index + 1) % combinedFrames.length; 
                 }
 
-                // Reproducir a 100ms por frame (ajusta según sea necesario)
-                // Reproducir a 40ms por frame (ajusta según sea necesario)
+               
                 setInterval(showFrame, 25);
             } catch (error) {
                 document.getElementById("ascii").textContent = "Error cargando ASCII";
