@@ -1,78 +1,38 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reproducción de ASCII</title>
-    <style>
-        body {
-            background-color: black;
-            color: white;
-            font-family: monospace;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            overflow: hidden;
-        }
-
-        #ascii {
-            white-space: pre;
-            overflow-x: auto;
-            overflow-y: hidden;
-            max-width: 100vw;
-            max-height: 90vh;
-            padding: 10px;
-            font-size: min(1.8vw, 2.2vh); /* Ajuste dinámico del tamaño de fuente */
-            line-height: 1.1; /* Ajustar altura de línea para mantener la proporción */
-        }
-
-        @media screen and (max-width: 600px) {
-            #ascii {
-                font-size: min(3vw, 2vh);
-                line-height: 1;
-            }
-        }
-    </style>
-</head>
-<body>
-
-    <h2>Animación de la manzana mala (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧</h2>
-    <pre id="ascii">Cargando...</pre>
-
-    <script>
+  <script>
         async function loadASCII() {
             try {
-                const responses = await Promise.all([
-                    fetch("ascii_part_1.txt"),
-                    fetch("ascii_part_2.txt")
-                ]);
+                const response = await fetch("ascii_images.txt");
+                const text = await response.text();
                 
-                const texts = await Promise.all(responses.map(res => res.text()));
+                // Separar por "=== IMAGEN X ===" para dividir los frames
+                const frames = text.split(/=== IMAGEN \d+ ===/).map(frame => frame.trim()).filter(f => f);
+                // Cargar ambos archivos
+                const response1 = await fetch("ascii_part_1.txt");
+                const response2 = await fetch("ascii_part_2.txt");
+                const text1 = await response1.text();
+                const text2 = await response2.text();
 
-                const frames = texts
-                    .flatMap(text => text.split(/=== IMAGEN \d+ ===/).map(frame => frame.trim()))
-                    .filter(frame => frame);
+                // Separar los frames de cada archivo
+                const frames1 = text1.split(/=== IMAGEN \d+ ===/).map(frame => frame.trim()).filter(f => f);
+                const frames2 = text2.split(/=== IMAGEN \d+ ===/).map(frame => frame.trim()).filter(f => f);
+
+                // Combinar los frames de ambos archivos
+                const combinedFrames = frames1.concat(frames2);
 
                 let index = 0;
                 function showFrame() {
                     document.getElementById("ascii").textContent = frames[index];
                     index = (index + 1) % frames.length;
+                    document.getElementById("ascii").textContent = combinedFrames[index];
+                    index = (index + 1) % combinedFrames.length; // Reiniciar cuando se llegue al final
                 }
 
-                setInterval(showFrame, 30);
+                // Reproducir a 100ms por frame (ajusta según sea necesario)
+                // Reproducir a 40ms por frame (ajusta según sea necesario)
+                setInterval(showFrame, 40);
             } catch (error) {
                 document.getElementById("ascii").textContent = "Error cargando ASCII";
+                console.error("Error al cargar ascii_images.txt", error);
                 console.error("Error al cargar los archivos ASCII", error);
             }
         }
-
-        loadASCII();
-    </script>
-
-</body>
-</html>
