@@ -10,7 +10,6 @@
             color: white;
             font-family: monospace;
             text-align: center;
-            font-size: 14px;
             margin: 0;
             padding: 0;
             display: flex;
@@ -26,14 +25,13 @@
             word-wrap: break-word;
             max-width: 100%;
             padding: 10px;
-            font-size: 12px;
+            font-size: 3vw; /* Ajuste dinámico al ancho de la pantalla */
             line-height: 1.2;
         }
 
-        /* Ajustes para celulares */
         @media screen and (max-width: 600px) {
             #ascii {
-                font-size: 10px; /* Reducir tamaño en pantallas pequeñas */
+                font-size: 4vw; /* Aumenta un poco en pantallas pequeñas */
                 line-height: 1.1;
                 padding: 5px;
             }
@@ -48,22 +46,24 @@
     <script>
         async function loadASCII() {
             try {
-                const response1 = await fetch("ascii_part_1.txt");
-                const response2 = await fetch("ascii_part_2.txt");
-                const text1 = await response1.text();
-                const text2 = await response2.text();
+                const responses = await Promise.all([
+                    fetch("ascii_part_1.txt"),
+                    fetch("ascii_part_2.txt")
+                ]);
+                
+                const texts = await Promise.all(responses.map(res => res.text()));
 
-                const frames1 = text1.split(/=== IMAGEN \d+ ===/).map(frame => frame.trim()).filter(f => f);
-                const frames2 = text2.split(/=== IMAGEN \d+ ===/).map(frame => frame.trim()).filter(f => f);
-                const combinedFrames = frames1.concat(frames2);
+                const frames = texts
+                    .flatMap(text => text.split(/=== IMAGEN \d+ ===/).map(frame => frame.trim()))
+                    .filter(frame => frame);
 
                 let index = 0;
                 function showFrame() {
-                    document.getElementById("ascii").textContent = combinedFrames[index];
-                    index = (index + 1) % combinedFrames.length;
+                    document.getElementById("ascii").textContent = frames[index];
+                    index = (index + 1) % frames.length;
                 }
 
-                setInterval(showFrame, 30); // Aumenté a 50ms para mejor rendimiento en móviles
+                setInterval(showFrame, 20);
             } catch (error) {
                 document.getElementById("ascii").textContent = "Error cargando ASCII";
                 console.error("Error al cargar los archivos ASCII", error);
