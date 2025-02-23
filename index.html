@@ -1,4 +1,30 @@
-  <script>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reproducción de ASCII</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: monospace;
+            white-space: pre;
+            text-align: center;
+            font-size: 12px;
+        }
+        #ascii {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Animación de la manzana mala (ﾉ◕ヮ◕)ﾉ*:･ﾟ✧</h2>
+    <pre id="ascii">Cargando...</pre>
+
+    <script>
         async function loadASCII() {
             try {
                 const response = await fetch("ascii_images.txt");
@@ -29,10 +55,16 @@
 
                 // Reproducir a 100ms por frame (ajusta según sea necesario)
                 // Reproducir a 40ms por frame (ajusta según sea necesario)
-                setInterval(showFrame, 20);
+                setInterval(showFrame, 25);
             } catch (error) {
                 document.getElementById("ascii").textContent = "Error cargando ASCII";
                 console.error("Error al cargar ascii_images.txt", error);
                 console.error("Error al cargar los archivos ASCII", error);
             }
         }
+
+        loadASCII();
+    </script>
+
+</body>
+</html>
