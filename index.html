@@ -30,7 +30,6 @@
                 const response = await fetch("ascii_images.txt");
                 const text = await response.text();
                 
-                // Separar por "=== IMAGEN X ===" para dividir los frames
                 const frames = text.split(/=== IMAGEN \d+ ===/).map(frame => frame.trim()).filter(f => f);
 
                 let index = 0;
@@ -39,7 +38,7 @@
                     index = (index + 1) % frames.length;
                 }
 
-                // Reproducir a 100ms por frame (ajusta según sea necesario)
+               
                 setInterval(showFrame, 25);
             } catch (error) {
                 document.getElementById("ascii").textContent = "Error cargando ASCII";
