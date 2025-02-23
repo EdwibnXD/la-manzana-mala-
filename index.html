@@ -46,7 +46,6 @@
     <script>
         async function loadASCII() {
             try {
-                // Carga ambos archivos desde el mismo repositorio
                 const responses = await Promise.all([
                     fetch("./ascii_part_1.txt"),
                     fetch("./ascii_part_2.txt")
@@ -54,7 +53,6 @@
                 
                 const texts = await Promise.all(responses.map(res => res.text()));
 
-                // Dividir los frames en base a "=== IMAGEN X ==="
                 const frames = texts
                     .flatMap(text => text.split(/=== IMAGEN \d+ ===/).map(frame => frame.trim()))
                     .filter(frame => frame);
@@ -65,7 +63,7 @@
                     index = (index + 1) % frames.length;
                 }
 
-                setInterval(showFrame, 50);
+                setInterval(showFrame, 25);
             } catch (error) {
                 document.getElementById("ascii").textContent = "Error cargando ASCII";
                 console.error("Error al cargar los archivos ASCII", error);
