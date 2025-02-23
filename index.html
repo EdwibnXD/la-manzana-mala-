@@ -63,7 +63,7 @@
                     index = (index + 1) % combinedFrames.length;
                 }
 
-                setInterval(showFrame, 50); // Aumenté a 50ms para mejor rendimiento en móviles
+                setInterval(showFrame, 30); // Aumenté a 50ms para mejor rendimiento en móviles
             } catch (error) {
                 document.getElementById("ascii").textContent = "Error cargando ASCII";
                 console.error("Error al cargar los archivos ASCII", error);
